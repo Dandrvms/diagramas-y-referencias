@@ -1,0 +1,67 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+skinparam linetype polyline
+skinparam nodesep 45
+skinparam ranksep 90
+skinparam padding 6
+skinparam ArrowFontSize 11
+skinparam NoteFontSize 11
+skinparam DefaultFontSize 12
+left to right direction
+
+storage recipe 
+
+package builder {
+  rectangle serializer
+  node payload
+}
+
+circle client_interface
+
+package client {
+  rectangle simclient
+  rectangle gpclient
+}
+
+cloud MERLOT
+
+package simulator {
+  rectangle steps
+  rectangle values
+  rectangle time
+}
+
+package runtime {
+  rectangle core
+  rectangle reports
+}
+
+database batch_reports
+storage logs
+
+boundary "sim ui" as simui
+boundary "runtime ui" as rui
+
+
+simulator -[hidden]down-> runtime
+batch_reports -[hidden]down-> logs
+client -[hidden]down-> MERLOT
+
+recipe --> builder : receives
+serializer ..> payload : packs
+payload --> client_interface
+client_interface --> client
+
+simclient <--> simulator
+client --> runtime : state
+core --> client : clientands
+
+gpclient <--> MERLOT
+
+reports --> batch_reports
+reports --> logs
+
+simulator <..> simui
+runtime <..> rui
+@enduml
