@@ -1,0 +1,82 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "ISA 88" as s88 {
+
+    package "Modelo físico" as fisico {
+        rectangle empresa {
+            rectangle sitio {
+                rectangle area {
+                    rectangle "celda de proceso" as celda
+                    rectangle unidad
+                    rectangle "modulo de equipo" as equipo
+                    rectangle "modulo de control" as controlm
+                }
+            }
+        }
+    }
+
+    package "Modelo de control procedimental" as procedural {
+        rectangle procedimiento {
+            rectangle "procedimiento de unidad" as UP
+            rectangle operacion
+            rectangle fase
+        }
+    }
+
+    package receta {
+        rectangle "requisitos de equipo" as requipo
+        rectangle "receta maestra" as maestra
+        rectangle "receta de control" as rcontrol
+    }
+
+    package "Ejecución e Información" as runtime {
+        rectangle monitoreo
+        rectangle reporte
+    }
+
+    ' --- FORZAR EL ORDENAMIENTO INTERNO (Columnas) ---
+    fisico -[hidden]right-> procedural
+    procedural -[hidden]right-> receta
+    receta -[hidden]down-> runtime
+
+    ' --- CONEXIONES INTERNAS DE ISA 88 ---
+    celda ..> unidad
+    unidad ..> equipo
+    equipo ..> controlm
+
+    UP ..> operacion
+    operacion ..> fase
+
+    requipo ..> maestra
+    maestra ..> rcontrol
+
+    monitoreo ..> reporte
+
+    ' Conexiones que cruzan paquetes internos
+    celda ..> requipo
+    controlm ..> fase
+
+    ' >>> NUEVA CONEXIÓN AGREGADA AQUÍ <<<
+    ' Conecta el modelo procedural con el de receta horizontalmente
+    procedimiento ..> receta 
+    
+    ' (Opcional) Conexión directa de Fase a Requisitos de Equipo
+    ' fase ..> requipo 
+
+}
+
+' --- AGENTE EXTERNO ---
+node "PLC" as PLC
+
+' --- FORZAR QUE EL PLC QUEDE FUERA Y A LA DERECHA ---
+s88 -[hidden]right-> PLC
+runtime -[hidden]right-> PLC
+
+' --- CONEXIONES HACIA EL AGENTE EXTERNO ---
+rcontrol ..> PLC
+PLC ..> monitoreo
+
+@enduml
