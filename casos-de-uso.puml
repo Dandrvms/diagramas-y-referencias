@@ -1,0 +1,73 @@
+@startuml
+' Fuerza la dirección de izquierda a derecha
+left to right direction
+skinparam actorStyle awesome
+
+' Definición de Actores
+actor "Usuario" as user
+actor "Simulador" as sim
+
+' Cuadro que representa el entorno de la aplicación
+rectangle " " {
+    
+    ' --- CASOS DE USO DEL USUARIO (Izquierda) ---
+    usecase "Crear proyecto de planta" as proj
+    usecase "Crear receta" as recipe
+    usecase "Ejecutar receta" as exec
+
+    ' Sub-casos del usuario (Centro)
+    usecase "Configurar jerarquía" as confproj
+    usecase "Configurar propiedades" as props
+    usecase "Editar receta" as edit
+
+    usecase "Configurar parametros" as params
+    usecase "Validar receta" as validate
+
+    usecase "Preparar receta de control" as control
+    usecase "Supervisar ejecución" as monitor
+    usecase "Generar reporte" as report
+    
+    ' --- CASOS DE USO DEL SIMULADOR (Derecha) ---
+    together {
+        usecase "Evaluar condiciones" as eval
+        usecase "Escribir variables" as write
+        usecase "Ejecutar orden" as command
+    }
+    
+    ' --- FORZAR LA DISPOSICIÓN (Layout) ---
+    ' En "left to right", un enlace oculto hacia abajo = una columna más a la derecha
+    report -[hidden]-> write
+    monitor -[hidden]-> command
+    control -[hidden]-> eval
+
+    ' --- Dependencias entre Casos de Uso ---
+    proj ..> confproj : <<includes>>
+    proj ..> props : <<includes>>
+
+    recipe ..> edit : <<includes>>
+
+    recipe ..> params : <<includes>>
+    recipe ..> validate : <<includes>>
+
+
+    exec ..> control : <<includes>>
+    exec ..> monitor : <<includes>>
+    exec ..> report : <<includes>>
+    
+    ' Dependencias del Simulador (apuntando hacia la izquierda)
+    ' ".up." en este modo = flecha hacia la izquierda, así el origen queda a la derecha
+    write .up.> report : <<includes>>
+    command <.up. monitor : <<extends>>
+}
+
+' --- Conexiones del Usuario (Izquierda -> Derecha) ---
+user --> proj
+user --> recipe
+user --> exec
+
+' --- Conexiones del Simulador (Derecha -> Izquierda) ---
+eval <-- sim
+write <-- sim
+command <-- sim
+
+@enduml
