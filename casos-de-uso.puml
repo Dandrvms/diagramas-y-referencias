@@ -25,7 +25,7 @@ rectangle " " {
 
     usecase "Preparar receta de control" as control
     usecase "Supervisar ejecución" as monitor
-    usecase "Generar reporte" as report
+
     
     ' --- CASOS DE USO DEL SIMULADOR (Derecha) ---
     together {
@@ -36,7 +36,7 @@ rectangle " " {
     
     ' --- FORZAR LA DISPOSICIÓN (Layout) ---
     ' En "left to right", un enlace oculto hacia abajo = una columna más a la derecha
-    report -[hidden]-> write
+
     monitor -[hidden]-> command
     control -[hidden]-> eval
 
@@ -52,11 +52,11 @@ rectangle " " {
 
     exec ..> control : <<includes>>
     exec ..> monitor : <<includes>>
-    exec ..> report : <<includes>>
+
     
     ' Dependencias del Simulador (apuntando hacia la izquierda)
     ' ".up." en este modo = flecha hacia la izquierda, así el origen queda a la derecha
-    write .up.> report : <<includes>>
+
     command <.up. monitor : <<extends>>
 }
 
