@@ -10,13 +10,13 @@ boundary ui as "Arbol de subproyecto de recetas"
 control core as "Controlador de receta"
 entity enty as "Modelo de receta"
 
-boundary top as "Editor de recetas"
+boundary editor as "Editor de recetas"
 
 
 user -- ui
-user -- top
+user -- editor
 ui -- core
 core -- enty
 
-top -- core
+editor -- core
 @endum

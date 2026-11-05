@@ -52,8 +52,8 @@ rectangle " " {
 
     exec ..> control : <<includes>>
     exec ..> monitor : <<includes>>
+    exec ..> write : <<extends>>
 
-    
     ' Dependencias del Simulador (apuntando hacia la izquierda)
     ' ".up." en este modo = flecha hacia la izquierda, así el origen queda a la derecha
 

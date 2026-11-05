@@ -1,0 +1,24 @@
+@startuml
+skinparam style strictuml
+skinparam actorStyle awesome
+left to right direction
+
+actor "Usuario" as user
+
+boundary ui as "Interfaz de proyecto"
+
+
+
+entity plant as "Modelo de datos de planta"
+
+control core as "Controlador de proyecto"
+
+
+user --> ui : "1"
+
+
+ui --> core : "2"
+core --> plant : "3"
+
+
+@endum

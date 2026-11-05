@@ -1,0 +1,23 @@
+@startuml
+skinparam style strictuml
+skinparam actorStyle awesome
+left to right direction
+
+actor "Usuario" as user
+
+
+control core as "Controlador de receta"
+entity recipe as "Modelo de receta"
+entity plant as "Modelo de planta"
+
+boundary editor as "Editor de recetas"
+
+
+
+user -- editor
+
+core -- recipe
+core -- plant
+
+editor -- core
+@endum

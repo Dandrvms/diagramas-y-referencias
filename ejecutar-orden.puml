@@ -1,0 +1,24 @@
+@startuml
+skinparam style strictuml
+skinparam actorStyle awesome
+left to right direction
+
+actor "Usuario" as user
+
+boundary runtime as "Panel de supervisión"
+
+
+
+entity process as "Proceso"
+
+control channel as "Gestor de comunicación"
+
+
+user -- runtime
+
+
+process -up- channel
+runtime -- channel
+
+
+@endum

@@ -1,0 +1,17 @@
+@startuml
+' Fuerza la dirección de izquierda a derecha
+left to right direction
+skinparam actorStyle awesome
+
+' Definición de Actores
+actor "Usuario" as user
+    usecase "Ejecutar receta" as exec
+    usecase "Preparar receta de control" as control
+    usecase "Supervisar ejecución" as monitor
+    usecase "Escribir variables" as write
+    exec ..> control : <<includes>>
+    exec ..> monitor : <<includes>>
+    exec ..> write : <<extends>>
+    user --> exec
+
+@enduml
