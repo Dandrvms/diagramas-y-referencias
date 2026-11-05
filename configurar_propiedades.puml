@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+skinparam actorStyle awesome
+left to right direction
+
+actor "Usuario" as user
+
+ 'Definición de los elementos básicos
+boundary ui as "Arbol de proyecto de planta"
+control core as "Controlador de modelo"
+entity enty as "Modelo de planta"
+
+boundary top as "Panel de elemento"
+
+
+user -- ui
+user -- top
+ui -- core
+core -- enty
+
+top -- core
+
+
+
+
+@endum
