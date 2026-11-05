@@ -1,0 +1,22 @@
+@startuml
+skinparam style strictuml
+skinparam actorStyle awesome
+left to right direction
+
+actor "Usuario" as user
+
+ 'Definición de los elementos básicos
+boundary ui as "Arbol de subproyecto de recetas"
+control core as "Controlador de receta"
+entity enty as "Modelo de receta"
+
+boundary top as "Editor de recetas"
+
+
+user -- ui
+user -- top
+ui -- core
+core -- enty
+
+top -- core
+@endum
