@@ -1,0 +1,22 @@
+@startuml
+skinparam style strictuml
+skinparam actorStyle awesome
+left to right direction
+
+actor "Usuario" as user
+
+boundary ui as "Panel de supervisión"
+
+
+
+entity comm as "Gestor de comunicación"
+
+control process as "Proceso"
+
+
+user --> ui : 1
+ui --> comm : 2
+comm --> process : 3
+
+
+@endum

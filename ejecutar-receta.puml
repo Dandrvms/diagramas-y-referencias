@@ -10,12 +10,14 @@ boundary ui as "Arbol de subproyecto de recetas"
 entity recipe as "Modelo de receta"
 control setup as "Gestor receta de control"
 boundary runtime as "Panel de supervisión"
+entity payload as "carga de datos"
 
 
 user -- ui
 ui -- setup
 user -- runtime
 setup -- recipe
+setup -- payload
 runtime -- setup
 
 @endum
