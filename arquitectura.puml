@@ -15,8 +15,8 @@ hexagon {
 </style>
 
 ' ===== ADAPTADORES PRIMARIOS =====
-package "Módulo de Interfaz de Usuario y\nGestión de Proyectos" <<Driving Adapters>> as UIM {
-  component "GuiAdapter" as Gui <<Driving Adapter>>
+package "Módulo de Interfaz de Usuario y\nGestión de Proyectos" as UIM {
+  component "GuiAdapter" as Gui
 }
 
 ' ===== HEXÁGONO =====
@@ -33,20 +33,20 @@ hexagon "Hexágono (Núcleo del sistema)" <<Hexagon>> as HEX {
     component "BusinessFacade" as Facade <<Application Service>>
   }
 
-  interface "ProjectManagementPort" as ProjPort <<Input Port>>
-  interface "RecipeManagementPort" as RecipePort <<Input Port>>
-  interface "PersistencePort" as PersPort <<Output Port>>
-  interface "CommunicationPort" as CommPort <<Output Port>>
+  interface "ProjectManagementPort" as ProjPort
+  interface "RecipeManagementPort" as RecipePort
+  interface "PersistencePort" as PersPort
+  interface "CommunicationPort" as CommPort
 }
 
 ' ===== ADAPTADORES SECUNDARIOS =====
-package "Módulo de Persistencia" <<Driven Adapters>> as PM {
-  component "XMLPersistenceAdapter" as Xml <<Driven Adapter>>
+package "Módulo de Persistencia" as PM {
+  component "XMLPersistenceAdapter" as Xml
 }
 
-package "Módulo de Comunicación" <<Driven Adapters>> as CM {
-  component "LocalCommunicationAdapter" as Loc <<Driven Adapter>>
-  component "PvaCommunicationAdapter" as Pva <<Driven Adapter>>
+package "Módulo de Comunicación" as CM {
+  component "LocalCommunicationAdapter" as Loc
+  component "PvaCommunicationAdapter" as Pva
 }
 
 ' --- Relaciones y Posicionamiento Vertical ---
@@ -68,7 +68,7 @@ Facade -down-> CommPort : <<use>>
 Gui .up.> ProjPort   : <<use>>
 Gui .up.> RecipePort : <<use>>
 
-Xml .up.|> PersPort
+Xml .down.|> PersPort
 Loc .up.|> CommPort
 Pva .up.|> CommPort
 
