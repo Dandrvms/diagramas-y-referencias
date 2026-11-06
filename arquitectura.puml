@@ -1,0 +1,86 @@
+@startuml
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+
+' Forzar dirección vertical (por defecto en PlantUML)
+top to bottom direction
+
+<style>
+hexagon {
+  MinimumWidth 800
+  HorizontalAlignment center
+}
+</style>
+
+' ===== ADAPTADORES PRIMARIOS =====
+package "Módulo de Interfaz de Usuario y\nGestión de Proyectos" <<Driving Adapters>> as UIM {
+  component "GuiAdapter" as Gui <<Driving Adapter>>
+}
+
+' ===== HEXÁGONO =====
+hexagon "Hexágono (Núcleo del sistema)" <<Hexagon>> as HEX {
+
+  package "Capa de Lógica de Negocio" <<Layer>> as BL {
+
+    ' Núcleo interno colocado primero para asegurar que quede arriba
+    package "Núcleo Interno (Capa de Dominio)" <<Layer>> as INNER {
+      component "Recipe" as Recipe <<Entity>>
+      component "PhysicalModel" as Model <<Entity>>
+    }
+
+    component "BusinessFacade" as Facade <<Application Service>>
+  }
+
+  interface "ProjectManagementPort" as ProjPort <<Input Port>>
+  interface "RecipeManagementPort" as RecipePort <<Input Port>>
+  interface "PersistencePort" as PersPort <<Output Port>>
+  interface "CommunicationPort" as CommPort <<Output Port>>
+}
+
+' ===== ADAPTADORES SECUNDARIOS =====
+package "Módulo de Persistencia" <<Driven Adapters>> as PM {
+  component "XMLPersistenceAdapter" as Xml <<Driven Adapter>>
+}
+
+package "Módulo de Comunicación" <<Driven Adapters>> as CM {
+  component "LocalCommunicationAdapter" as Loc <<Driven Adapter>>
+  component "PvaCommunicationAdapter" as Pva <<Driven Adapter>>
+}
+
+' --- Relaciones y Posicionamiento Vertical ---
+
+' Entidades arriba de la Fachada
+Facade -up-> Recipe : <<use>>
+Facade -up-> Model  : <<use>>
+Recipe -right-> Model : <<use>>
+
+' Puertos debajo de la Fachada (Fachada provee los de entrada)
+Facade -down.|> ProjPort
+Facade -down.|> RecipePort
+
+' Puertos de salida debajo de la Fachada (Fachada los usa)
+Facade -down-> PersPort : <<use>>
+Facade -down-> CommPort : <<use>>
+
+' Adaptadores debajo de los puertos
+Gui .up.> ProjPort   : <<use>>
+Gui .up.> RecipePort : <<use>>
+
+Xml .up.|> PersPort
+Loc .up.|> CommPort
+Pva .up.|> CommPort
+
+' --- Trucos de Layout (Hidden Links) ---
+
+' Distribuir los tres adaptadores en los tres lados inferiores (izquierda a derecha)
+UIM -[hidden]right-> PM
+PM -[hidden]right-> CM
+
+HEX -[hidden]- CM
+
+' Asegurar que el paquete del núcleo interno quede estrictamente arriba de la fachada
+'INNER -[hidden]down-> Facade
+
+@enduml
